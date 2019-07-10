@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const user_controller = require('../controllers/user.controller');
+const student_controller = require('../controllers/student.controller');
 
 
 //POST USER
-router.post('/user', user_controller.user_create);
+router.post('/user/:id', user_controller.user_create);
 
 //GET USERS
 router.get('/users', user_controller.users_all);
@@ -17,6 +18,21 @@ router.put('/user/:id', user_controller.user_update);
 
 //DELETE USER
 router.delete('/user/:id', user_controller.user_delete);
+
+//POST STUDENT
+router.post('/student', student_controller.student_create);
+
+//GET STUDENT
+router.get('/students', student_controller.students_all);
+
+//GET STUDENT BY ID
+router.get('/student/:id', student_controller.students_detail);
+
+//UPDATE STUDENT
+router.put('/student/:id', student_controller.student_update);
+
+//DELETE STUDENT
+router.delete('/student/:id', student_controller.student_delete);
 
 
 module.exports = router;
