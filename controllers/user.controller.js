@@ -1,24 +1,30 @@
 const User = require('../models/user.model');
 const Student = require('../models/student.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 //POST USER
 exports.user_create = function (req, res) {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         req.body.password = hash;
+
         User.create({
             username: req.body.username,
             password: req.body.password,
             id_student: req.params.id
-        }, (err, results) => {
+        },
+        (err, results) => {
             if (err) {
-                return err
+                return res.status(500).send("There was problem registering the user");
             } else {
                 Student.findByIdAndUpdate(req.params.id, {
                     id_user: results._id
-                }, (err, response) => {
-                    console.log("Hasil", response)
+                }, 
+                (err, response) => {
+                    let token = jwt.sign({id: results._id}, 'secret',{ expiresIn: 60 });
+
+                    console.log("Hasil ", response)
                     if (err) {
                         res.json({
                             success: false,
@@ -27,7 +33,8 @@ exports.user_create = function (req, res) {
                     } else {
                         res.json({
                             success: true,
-                            results: "success"
+                            results: results,
+                            token: token
                         })
                     }
                 });
@@ -84,6 +91,72 @@ exports.user_create = function (req, res) {
     //     }
     // })
 };
+
+//LOGIN USER
+exports.user_login = function (req, res) {
+    User.findOne({username: req.body.username},(err, user) => {
+        if (err) return res.status(500).send(
+            "Error on the server"
+            );
+        if (!user) return res.status(404).send(
+            "No user found"
+            );
+
+        let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+
+        if (!passwordIsValid) return res.status(401).json({
+            login: false,
+            message: "invalid username or password"
+        });
+
+        let token = jwt.sign({id: user._id}, 'secret' ,{ expiresIn: 60 });
+        res.status(200).json({
+            message: "User found!!!",
+            data: {user: user},
+            token: token
+        })
+    })
+}
+exports.user_dashboard = function (req, res) {
+    var token = req.headers['x-access-token'];
+    if(!token)
+        return res.status(403).json({
+            auth: false,
+            message: 'No token provided.'
+        });
+    
+    jwt.verify(token, config.secret,
+        function(err, decoded) {
+            if (err)
+            return res.status(500).json({
+                auth: false,
+                message: "Failed to authenticate token"
+            });
+    
+            //if everythin good
+            // req.userId = decoded.id;
+            // next();
+    });
+        
+    User.findById(req.userId,
+        {password: 0}, //projection password
+        function (err, user) {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+        if (!user) return res.status(404).send("No user found.");
+    
+        res.status(200).json(user);
+    });
+};
+
+
+//USER LOGOUT
+exports.user_logout = function (req, res) {
+    res.status(200).json({
+        login: false,
+        message:"Yu're logout.",
+
+    })
+}
 
 //GET USERS
 exports.users_all = function (req, res) {

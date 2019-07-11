@@ -4,8 +4,15 @@ const user_controller = require('../controllers/user.controller');
 const student_controller = require('../controllers/student.controller');
 
 
-//POST USER
-router.post('/user/:id', user_controller.user_create);
+//REGISTER USER
+router.post('/register/:id', user_controller.user_create);
+
+//LOGIN USER
+router.post('/login', user_controller.user_login);
+router.get('/me', user_controller.user_dashboard);
+
+//LOGOUT USER
+router.get('/logout',user_controller.user_logout);
 
 //GET USERS
 router.get('/users', user_controller.users_all);
