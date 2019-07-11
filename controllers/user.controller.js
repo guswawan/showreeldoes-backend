@@ -149,27 +149,3 @@ exports.user_delete = function (req, res) {
         });
     });
 };
-
-// exports.login_user = function (req, res) {
-//     User.findOne({
-//         username: req.body.username
-//     })
-//         .then(user => {
-//             if (user) {
-//                 if (bcrypt.compareSync(req.body.password, user.password)) {
-//                     let payload = {
-//                         _id: user._id
-//                     }
-//                     let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 1440 })
-//                     res.send(token)
-//                 } else {
-//                     res.json({ error: 'User tidak tersedia' })
-//                 }
-//             } else {
-//                 res.json({ error: 'User tidak tersedia' })
-//             }
-//         })
-//         .catch(err => {
-//             res.send('error' + err)
-//         })
-// }
