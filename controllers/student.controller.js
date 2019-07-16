@@ -2,9 +2,10 @@ const Student = require('../models/student.model');
 
 
 module.exports = {
+
     //POST STUDENT
     student_create: function (req, res) {
-        let student = req.body
+        const student = req.body
         Student.findOne({
             email: req.body.email
         })
@@ -12,9 +13,9 @@ module.exports = {
             .then(user => {
                 if (!user) {
                     Student.create(student)
-                        .then(user => {
+                        .then(users => {
                             res.json({
-                                message: user + 'Registered Success'
+                                message: users + 'Registered Success'
                             })
                         })
                         .catch(err => {
@@ -25,6 +26,9 @@ module.exports = {
                         status: "Email telah digunakan"
                     })
                 }
+            })
+            .catch(err => {
+                res.send('Error' + err)
             })
     },
 

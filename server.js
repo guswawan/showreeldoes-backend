@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const road = require('./routes/routes');
+require('dotenv').config();
 
 
 //INIT EXPRESS
@@ -25,7 +26,7 @@ app.use('/v1', road);
 
 
 //MONGOOSE CONNECTION
-const dbRoute = "mongodb+srv://programmerdoes6:doesgen6pro@showreeldoesuniversity-zujwd.mongodb.net/showreeldoes?retryWrites=true&w=majority";
+const dbRoute = process.env.DB_ACCOUNT;
 
 mongoose.set('useFindAndModify', false);
 mongoose.connect(dbRoute, {
