@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 
 //POST USER
-exports.user_create = function (req, res) {
+exports.user_createbyid = function (req, res) {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         req.body.password = hash;
         User.create({
@@ -16,7 +16,8 @@ exports.user_create = function (req, res) {
                 return err
             } else {
                 Student.findByIdAndUpdate(req.params.id, {
-                    id_user: results._id
+                    id_user: results.id,
+                    id_showreel: results.id
                 }, (err, response) => {
                     console.log("Hasil", response)
                     if (err) {
@@ -27,7 +28,7 @@ exports.user_create = function (req, res) {
                     } else {
                         res.json({
                             success: true,
-                            results: "success"
+                            message: "success"
                         })
                     }
                 });
@@ -115,12 +116,9 @@ exports.users_detail = function (req, res) {
 
 //PUT USER
 exports.user_update = function (req, res) {
-    console.log(req.body.password)
+    let updateUser = req.body
     bcrypt.hash(req.body.password, 10, (err, hash) => {
-        User.findByIdAndUpdate(req.params.id, {
-            username: req.body.username,
-            password: hash
-        }, (err, user) => {
+        User.findByIdAndUpdate(req.params.id, updateUser, (err, user) => {
             if (err) {
                 res.json({
                     success: false,
@@ -129,7 +127,7 @@ exports.user_update = function (req, res) {
             } else {
                 res.json({
                     success: true,
-                    message: "User updated successfully!"
+                    message: "User updated successfully!",
                 })
             }
         })
@@ -150,26 +148,3 @@ exports.user_delete = function (req, res) {
     });
 };
 
-// exports.login_user = function (req, res) {
-//     User.findOne({
-//         username: req.body.username
-//     })
-//         .then(user => {
-//             if (user) {
-//                 if (bcrypt.compareSync(req.body.password, user.password)) {
-//                     let payload = {
-//                         _id: user._id
-//                     }
-//                     let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 1440 })
-//                     res.send(token)
-//                 } else {
-//                     res.json({ error: 'User tidak tersedia' })
-//                 }
-//             } else {
-//                 res.json({ error: 'User tidak tersedia' })
-//             }
-//         })
-//         .catch(err => {
-//             res.send('error' + err)
-//         })
-// }

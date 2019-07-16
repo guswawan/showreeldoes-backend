@@ -8,7 +8,10 @@ const salt = 10;
 // >>>>>>> master
 
 const UserSchema = new Schema({
-    username: String,
+    username: {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
@@ -19,10 +22,5 @@ const UserSchema = new Schema({
     },
     id_student: Schema.Types.ObjectId
 });
-
-// UserSchema.pre('save', (next) => {
-//     this.password = bcrypt.hash(this.password, salt);
-//     next();
-// })
 
 module.exports = mongoose.model('User', UserSchema);

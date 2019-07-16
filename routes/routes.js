@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const user_controller = require('../controllers/user.controller');
 const student_controller = require('../controllers/student.controller');
+const showreel_controller = require('../controllers/showreel.controller');
+const department_controller = require('../controllers/department.controller');
 
 
-//POST USER
-router.post('/user/:id', user_controller.user_create);
+
+//POST USER BY ID
+router.post('/user/:id', user_controller.user_createbyid);
 
 //GET USERS
 router.get('/users', user_controller.users_all);
@@ -33,6 +36,37 @@ router.put('/student/:id', student_controller.student_update);
 
 //DELETE STUDENT
 router.delete('/student/:id', student_controller.student_delete);
+
+//GET SHOWREEL
+router.get('/showreels', showreel_controller.showreel_all);
+
+//GET SHOWREEL BY ID
+router.get('/showreel/:id', showreel_controller.showreel_detail);
+
+//POST SHOWREEL
+router.post('/showreel', showreel_controller.showreel_create);
+
+//UPDATE SHOWREEL
+router.put('/showreel/:id', showreel_controller.showreel_update);
+
+//DELETE SHOWREEL
+router.delete('/showreel/:id', showreel_controller.showreel_delete);
+
+//POST DEPARTMENT
+router.post('/department', department_controller.department_create);
+
+//GET DEPARTMENT
+router.get('/departments', department_controller.department_all);
+
+//GET DEPARTMENT BY ID
+router.get('/department/:id', department_controller.department_detail);
+
+//UPDATE DEPARTMENT
+router.put('/department/:id', department_controller.department_update);
+
+//DELETE DEPARTMENT
+router.delete('/department/:id', department_controller.department_delete);
+
 
 
 module.exports = router;

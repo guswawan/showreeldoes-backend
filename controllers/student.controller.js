@@ -4,16 +4,7 @@ const Student = require('../models/student.model');
 module.exports = {
     //POST STUDENT
     student_create: function (req, res) {
-        let student = {
-            status: req.body.status,
-            gender: req.body.gender,
-            full_name: req.body.full_name,
-            department: req.body.department,
-            birthday: req.body.birthday,
-            email: req.body.email,
-            address: req.body.address,
-            phone: req.body.phone
-        }
+        let student = req.body
         Student.findOne({
             email: req.body.email
         })
@@ -23,7 +14,7 @@ module.exports = {
                     Student.create(student)
                         .then(user => {
                             res.json({
-                                message: user.email + 'Registered Success'
+                                message: user + 'Registered Success'
                             })
                         })
                         .catch(err => {
@@ -56,7 +47,7 @@ module.exports = {
 
     //GET STUDENT BY ID
     students_detail: function (req, res) {
-        Student.findById(req.params.id, (err, students) => {
+        Student.findById(req.params.id, (err, student) => {
             if (err) {
                 res.json({
                     status: false,
@@ -65,7 +56,7 @@ module.exports = {
             } else {
                 res.json({
                     status: true,
-                    students: students
+                    student: student
                 })
             }
         })
@@ -73,18 +64,22 @@ module.exports = {
 
     //PUT STUDENT
     student_update: function (req, res) {
-        let updateStudent = {
-            full_name: req.body.full_name,
-            department: req.body.department,
-            status: req.body.status,
-            gender: req.body.gender,
-            birthday: req.body.birthday,
-            email: req.body.email,
-            address: req.body.address,
-            phone: req.body.phone,
-            id_user: req.body.id_user,
-            profile_pic: req.body.profile_pic
-        }
+        let updateStudent = req.body;
+        /* Student.findOneAndUpdate({
+            _id: req.params.id
+        }, updateStudent)
+            .then(student => {
+                res.json({
+                    status: true,
+                    student: student
+                })
+            })
+            .catch(err => {
+                res.json({
+                    status: false,
+                    error: err
+                })
+            }) */
         Student.findOneAndUpdate({
             _id: req.params.id
         }, updateStudent, err => {
@@ -94,6 +89,7 @@ module.exports = {
                     error: err
                 })
             } else {
+                console.log("berhasil", updateStudent)
                 res.json({
                     status: true,
                     message: "Student updated!"
