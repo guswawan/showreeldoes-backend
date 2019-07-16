@@ -4,6 +4,7 @@ const user_controller = require('../controllers/user.controller');
 const student_controller = require('../controllers/student.controller');
 const showreel_controller = require('../controllers/showreel.controller');
 const department_controller = require('../controllers/department.controller');
+const about_controller = require('../controllers/about.controller');
 
 
 
@@ -66,6 +67,21 @@ router.put('/department/:id', department_controller.department_update);
 
 //DELETE DEPARTMENT
 router.delete('/department/:id', department_controller.department_delete);
+
+//POST ABOUT
+router.post('/about', about_controller.about_create);
+
+//GET ABOUT
+router.get('/abouts', about_controller.about_all);
+
+//GET ABOUT BY ID
+router.get('/about/:id', about_controller.about_detail);
+
+//UPDATE ABOUT
+router.put('/about/:id', about_controller.about_update);
+
+//DELETE ABOUT
+router.delete('/about/:id', about_controller.about_delete);
 
 
 
