@@ -7,11 +7,15 @@ const department_controller = require('../controllers/department.controller');
 const about_controller = require('../controllers/about.controller');
 
 
+//REGISTER USER
+// router.post('/register/:id', user_controller.user_create);
+
 //LOGIN USER
-router.post('/user/login', user_controller.user_login);
+router.post('/login', user_controller.user_login);
+router.get('/me', user_controller.user_dashboard);
 
 //LOGOUT USER
-router.get('/user/logout', user_controller.user_logout);
+router.get('/logout', user_controller.user_logout);
 
 //POST USER BY ID
 router.post('/user/:id', user_controller.user_createbyid);
