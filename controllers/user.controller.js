@@ -42,7 +42,7 @@ exports.user_createbyid = function (req, res) {
 };
 
 //LOGIN USER
-exports.user_login = function (req, res) {
+exports.user_login = async function (req, res) {
     User.findOne({ username: req.body.username }, (err, user) => {
         if (err) return res.status(500).send(
             "Error on the server"
