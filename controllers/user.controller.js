@@ -22,7 +22,7 @@ exports.user_create = function (req, res) {
                     id_user: results._id
                 }, 
                 (err, response) => {
-                    let token = jwt.sign({id: results._id}, 'secret',{ expiresIn: 60 });
+                    let token = jwt.sign({id: results._id}, 'secret',{ expiresIn: 3600 });
 
                     console.log("Hasil ", response)
                     if (err) {
@@ -102,7 +102,7 @@ exports.user_login = function (req, res) {
             "No user found"
             );
 
-        let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+        let passwordIsValid = bcrypt.compare(req.body.password, user.password);
 
         if (!passwordIsValid) return res.status(401).json({
             login: false,
@@ -125,21 +125,21 @@ exports.user_dashboard = function (req, res) {
             message: 'No token provided.'
         });
     
-    jwt.verify(token, config.secret,
+    jwt.verify(token, 'secret', //dari config.secret diubah ke secret
         function(err, decoded) {
             if (err)
             return res.status(500).json({
                 auth: false,
                 message: "Failed to authenticate token"
-            });
+            })
     
             //if everythin good
-            // req.userId = decoded.id;
+            req.userId = decoded.id;
             // next();
     });
         
     User.findById(req.userId,
-        {password: 0}, //projection password
+       // {password: 0}, //projection password
         function (err, user) {
         if (err) return res.status(500).send("There was a problem finding the user.");
         if (!user) return res.status(404).send("No user found.");
