@@ -11,7 +11,7 @@ exports.user_createbyid = function (req, res) {
 
         User.create({
             username: req.body.username,
-            password: req.body.password,
+            password: hash,
             id_student: req.params.id
         },
         (err, results) => {
@@ -19,19 +19,18 @@ exports.user_createbyid = function (req, res) {
                 return res.status(500).send("There was problem registering the user");
             } else {
                 Student.findByIdAndUpdate(req.params.id, {
-<<<<<<< HEAD
-                    id_user: results._id
-                }, 
-                (err, response) => {
-                    let token = jwt.sign({id: results._id}, 'secret',{ expiresIn: 3600 });
-
-                    console.log("Hasil ", response)
-=======
-                    id_user: results.id,
+                    id_user: results._id,
                     id_showreel: results.id
-                }, (err, response) => {
+                }, 
+                // (err, response) => {
+                //     // let token = jwt.sign({id: results._id}, 'secret',{ expiresIn: 3600 });
+
+                //     console.log("Hasil ", response)
+                //     // id_user: results.id,
+                    
+                // }
+                 (err, response) => {
                     console.log("Hasil", response)
->>>>>>> 9bc604b5546caea0ca24c903441bde850a2d11f7
                     if (err) {
                         res.json({
                             success: false,
@@ -40,12 +39,9 @@ exports.user_createbyid = function (req, res) {
                     } else {
                         res.json({
                             success: true,
-<<<<<<< HEAD
                             results: results,
-                            token: token
-=======
+                            // token: token,
                             message: "success"
->>>>>>> 9bc604b5546caea0ca24c903441bde850a2d11f7
                         })
                     }
                 });
@@ -113,21 +109,49 @@ exports.user_login = function (req, res) {
             "No user found"
             );
 
-        let passwordIsValid = bcrypt.compare(req.body.password, user.password);
+        let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
 
         if (!passwordIsValid) return res.status(401).json({
             login: false,
             message: "invalid username or password"
         });
 
-        let token = jwt.sign({id: user._id}, 'secret' ,{ expiresIn: 60 });
+        let token = jwt.sign({id: user._id}, 'secret' ,{ expiresIn: '1h' });
         res.status(200).json({
             message: "User found!!!",
             data: {user: user},
             token: token
         })
     })
+
+        // User.findOne({username: req.body.username}, (err, user) => {
+        //     if (err) {
+        //         res.status(500).json({
+        //             error: "error"
+        //         })
+        //     } else {
+        //         if (bcrypt.compare(req.body.password, user.password)) {
+        //             const token = jwt.sign({id: user.id_student}, 'secret', {expiresIn: '1h'});
+        //             res.json({
+        //                 status: "Success",
+        //                 message: "User found",
+        //                 data: {
+        //                     user: user,
+        //                     token: token
+        //                 }
+        //             });
+        //         } else {
+        //             res.json({
+        //                 status: "Error",
+        //                 message: "Invalid email/password",
+        //                 data: null
+        //             })
+        //         }
+        //     }
+        // })
 }
+
+
 exports.user_dashboard = function (req, res) {
     var token = req.headers['x-access-token'];
     if(!token)
