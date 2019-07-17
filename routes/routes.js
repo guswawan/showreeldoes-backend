@@ -8,7 +8,7 @@ const about_controller = require('../controllers/about.controller');
 
 
 //REGISTER USER
-router.post('/register/:id', user_controller.user_create);
+// router.post('/register/:id', user_controller.user_create);
 
 //LOGIN USER
 router.post('/login', user_controller.user_login);
