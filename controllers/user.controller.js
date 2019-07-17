@@ -1,6 +1,8 @@
 const User = require('../models/user.model');
 const Student = require('../models/student.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 //POST USER
@@ -26,9 +28,11 @@ exports.user_createbyid = function (req, res) {
                             error: err
                         })
                     } else {
+                        // var token = jwt.sign({ id: response._id }, process.env.TOKEN_KEY, { expiresIn: 86400 })
                         res.json({
                             success: true,
-                            message: "success"
+                            message: response,
+                            // token: token
                         })
                     }
                 });
@@ -85,6 +89,27 @@ exports.user_createbyid = function (req, res) {
     //     }
     // })
 };
+
+//LOGIN USER
+exports.user_login = function (req, res) {
+    User.findOne({ username: req.body.username }, (err, user) => {
+        console.log(user)
+        if (err) return res.status(500).send('Error on the server');
+        if (!user) return res.status(404).send('No user found');
+
+        let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+        if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
+
+        let token = jwt.sign({ id: user.id_student }, process.env.TOKEN_KEY, { expiresIn: 86400 });
+
+        res.status(200).send({ auth: true, token: token })
+    })
+}
+
+//LOGOUT USER
+exports.user_logout = function (req, res) {
+    res.status(200).send({ auth: false, token: null });
+}
 
 //GET USERS
 exports.users_all = function (req, res) {

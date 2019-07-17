@@ -7,6 +7,11 @@ const department_controller = require('../controllers/department.controller');
 const about_controller = require('../controllers/about.controller');
 
 
+//LOGIN USER
+router.post('/user/login', user_controller.user_login);
+
+//LOGOUT USER
+router.get('/user/logout', user_controller.user_logout);
 
 //POST USER BY ID
 router.post('/user/:id', user_controller.user_createbyid);
