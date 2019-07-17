@@ -5,6 +5,7 @@ const student_controller = require('../controllers/student.controller');
 const showreel_controller = require('../controllers/showreel.controller');
 const department_controller = require('../controllers/department.controller');
 const about_controller = require('../controllers/about.controller');
+const partner_controller = require('../controllers/partner.controller');
 
 
 //REGISTER USER
@@ -91,6 +92,21 @@ router.put('/about/:id', about_controller.about_update);
 
 //DELETE ABOUT
 router.delete('/about/:id', about_controller.about_delete);
+
+//POST PARTNER
+router.post('/partner', partner_controller.partner_create);
+
+//GET PARTNER
+router.get('/partners', partner_controller.partner_all);
+
+//GET PARTNER BY ID
+router.get('/partner/:id', partner_controller.partner_detail);
+
+//UPDATE PARTNER
+router.put('/partner/:id', partner_controller.partner_update);
+
+//DELETE PARTNER
+router.delete('/partner/:id', partner_controller.partner_delete);
 
 
 
