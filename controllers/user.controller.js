@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 //POST USER
-exports.user_create = function (req, res) {
+exports.user_createbyid = function (req, res) {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         req.body.password = hash;
 
@@ -19,12 +19,19 @@ exports.user_create = function (req, res) {
                 return res.status(500).send("There was problem registering the user");
             } else {
                 Student.findByIdAndUpdate(req.params.id, {
+<<<<<<< HEAD
                     id_user: results._id
                 }, 
                 (err, response) => {
                     let token = jwt.sign({id: results._id}, 'secret',{ expiresIn: 3600 });
 
                     console.log("Hasil ", response)
+=======
+                    id_user: results.id,
+                    id_showreel: results.id
+                }, (err, response) => {
+                    console.log("Hasil", response)
+>>>>>>> 9bc604b5546caea0ca24c903441bde850a2d11f7
                     if (err) {
                         res.json({
                             success: false,
@@ -33,8 +40,12 @@ exports.user_create = function (req, res) {
                     } else {
                         res.json({
                             success: true,
+<<<<<<< HEAD
                             results: results,
                             token: token
+=======
+                            message: "success"
+>>>>>>> 9bc604b5546caea0ca24c903441bde850a2d11f7
                         })
                     }
                 });
@@ -188,12 +199,9 @@ exports.users_detail = function (req, res) {
 
 //PUT USER
 exports.user_update = function (req, res) {
-    console.log(req.body.password)
+    let updateUser = req.body
     bcrypt.hash(req.body.password, 10, (err, hash) => {
-        User.findByIdAndUpdate(req.params.id, {
-            username: req.body.username,
-            password: hash
-        }, (err, user) => {
+        User.findByIdAndUpdate(req.params.id, updateUser, (err, user) => {
             if (err) {
                 res.json({
                     success: false,
@@ -202,7 +210,7 @@ exports.user_update = function (req, res) {
             } else {
                 res.json({
                     success: true,
-                    message: "User updated successfully!"
+                    message: "User updated successfully!",
                 })
             }
         })
@@ -223,26 +231,3 @@ exports.user_delete = function (req, res) {
     });
 };
 
-// exports.login_user = function (req, res) {
-//     User.findOne({
-//         username: req.body.username
-//     })
-//         .then(user => {
-//             if (user) {
-//                 if (bcrypt.compareSync(req.body.password, user.password)) {
-//                     let payload = {
-//                         _id: user._id
-//                     }
-//                     let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 1440 })
-//                     res.send(token)
-//                 } else {
-//                     res.json({ error: 'User tidak tersedia' })
-//                 }
-//             } else {
-//                 res.json({ error: 'User tidak tersedia' })
-//             }
-//         })
-//         .catch(err => {
-//             res.send('error' + err)
-//         })
-// }
