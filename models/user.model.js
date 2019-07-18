@@ -20,11 +20,11 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    id_student: Schema.Types.ObjectId,
     token: {
         type: String,
         default: null
-    }
+    },
+    id_student: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('User', UserSchema);

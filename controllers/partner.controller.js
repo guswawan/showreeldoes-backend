@@ -63,9 +63,21 @@ module.exports = {
                     message: 'Cant update partner'
                 })
             } else {
-                res.status(200).json({
-                    success: true,
-                    message: 'Success Update!'
+                Partner.findById({
+                    _id: req.params.id
+                }, (err, id) => {
+                    if (err) {
+                        res.status(400).json({
+                            success: false,
+                            msg: "Error cant get by id"
+                        })
+                    } else {
+                        res.status(200).json({
+                            success: true,
+                            update: id,
+                            message: 'Success Update!'
+                        })
+                    }
                 })
             }
         })
