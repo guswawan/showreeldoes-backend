@@ -59,55 +59,62 @@ exports.user_login = async function (req, res) {
                 message: "Invalid username or password"
             })
         } else {
-            let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
-            res.status(200).json({
-                message: "User found!!!",
-                data: { user: user },
-                token: token
+            let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: 3600 });
+            User.findByIdAndUpdate({_id: user._id}, {token: token}, (err, update) => {
+                if (err)
+                    res.status(404).json({
+                        message: "Failed token"
+                    })
+                    res.status(200).json({
+                        message: "User found!!!",
+                        data: { user: user },
+                        update: update
+                    })
             })
+            
         }
     })
 }
 
 
 exports.user_dashboard = function (req, res) {
-    var token = req.headers['x-access-token'];
-    if (!token)
-        return res.status(403).json({
-            auth: false,
-            message: 'No token provided.'
-        });
+    // var token = req.headers['x-access-token'];
+    // if (!token)
+    //     return res.status(403).json({
+    //         auth: false,
+    //         message: 'No token provided.'
+    //     });
 
-    jwt.verify(token, 'secret', //dari config.secret diubah ke secret
-        function (err, decoded) {
-            if (err)
-                return res.status(500).json({
-                    auth: false,
-                    message: "Failed to authenticate token"
-                })
+    // jwt.verify(token, 'secret', //dari config.secret diubah ke secret
+    //     function (err, decoded) {
+    //         if (err)
+    //             return res.status(500).json({
+    //                 auth: false,
+    //                 message: "Failed to authenticate token"
+    //             })
 
-            //if everythin good
-            req.userId = decoded.id;
-            // next();
-        });
-
-    User.findById(req.userId,
-        // {password: 0}, //projection password
-        function (err, user) {
-            if (err) return res.status(500).send("There was a problem finding the user.");
-            if (!user) return res.status(404).send("No user found.");
-
-            res.status(200).json(user);
-        });
+    //         //if everythin good
+    //         req.userId = decoded.id;
+    //         // next();
+            User.findById(req.userId,
+                // {password: 0}, //projection password
+                function (err, user) {
+                    if (err) return res.status(500).send("There was a problem finding the user.");
+                    if (!user) return res.status(404).send("No user found.");
+        
+                    res.status(200).json(user);
+                }
+            );
+        //});
 };
 
 
 //USER LOGOUT
 exports.user_logout = function (req, res) {
     res.status(200).json({
-        login: false,
         message: "Yu're logout.",
-
+        auth: false,
+        token: null
     })
 }
 
