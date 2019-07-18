@@ -123,7 +123,6 @@ exports.user_dashboard = function (req, res) {
                     res.status(200).json(user);
                 });
         });
-
 };
 
 
