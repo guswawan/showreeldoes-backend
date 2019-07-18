@@ -35,20 +35,6 @@ exports.user_createbyid = function (req, res) {
                                 })
                             }
                         });
-                    // Student.find({}, (err, updated) => {
-                    //     if (err) {
-                    //         res.status(400).json({
-                    //             success: false,
-                    //             msg: "Error cant get by id"
-                    //         })
-                    //     } else {
-                    //         res.status(200).json({
-                    //             success: true,
-                    //             update: updated,
-                    //             message: 'Success Update!'
-                    //         })
-                    //     }
-                    // })
                 }
             });
     });
@@ -56,39 +42,56 @@ exports.user_createbyid = function (req, res) {
 
 //LOGIN USER
 exports.user_login = async function (req, res) {
-    User.findOne({ username: req.body.username }, (err, user) => {
-        if (err) return res.status(500).send(
-            "Error on the server"
-        );
-        if (!user) return res.status(404).send(
-            "No user found"
-        );
-        console.log(user)
-        let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (req.body.password && req.body.username) {
+        User.findOne({ username: req.body.username }, (err, user) => {
+            let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+            if (err) return res.status(500).send(
+                "Error on the server"
+            );
+            if (!user) return res.status(404).send(
+                "No user found"
+            );
+            console.log(user)
 
-        if (!passwordIsValid) {
-            return res.status(401).json({
-                login: false,
-                message: "Invalid username or password"
-            })
-        } else {
-            let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
-            User.findByIdAndUpdate({ _id: user._id }, { token: token }, (err, update) => {
-                if (err) {
-                    res.status(400).json({
-                        success: false,
-                        error: "Cant update"
-                    })
-                } else {
-                    res.status(200).json({
-                        message: "User found!!!",
-                        data: { user: user },
-                        update: update
-                    })
-                }
-            })
-        }
-    })
+            if (!passwordIsValid) {
+                return res.status(401).json({
+                    login: false,
+                    message: "Invalid username or password"
+                })
+            } else {
+                let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
+                User.findByIdAndUpdate({ _id: user._id }, { token: token }, (err, update) => {
+                    if (err) {
+                        res.status(400).json({
+                            success: false,
+                            error: "Cant update"
+                        })
+                    } else {
+                        User.findOne({
+                            username: req.body.username
+                        }, (err, id) => {
+                            if (err) {
+                                res.status(400).json({
+                                    success: false,
+                                    msg: "Error cant get by id"
+                                })
+                            } else {
+                                res.status(200).json({
+                                    success: true,
+                                    update: id,
+                                    message: 'Success Update!'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    } else {
+        res.status(400).json({
+            msg: "Masukkan password"
+        })
+    }
 }
 
 

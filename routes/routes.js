@@ -26,7 +26,7 @@ router.post('/user/:id', user_controller.user_createbyid);
 router.get('/users', auth, user_controller.users_all);
 
 //GET USER BY ID
-router.get('/user/:id', user_controller.users_detail);
+router.get('/user/:id', auth, user_controller.users_detail);
 
 //UPDATE USER
 router.put('/user/:id', auth, user_controller.user_update);

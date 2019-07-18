@@ -69,21 +69,6 @@ module.exports = {
     //PUT STUDENT
     student_update: function (req, res) {
         let updateStudent = req.body;
-        /* Student.findOneAndUpdate({
-            _id: req.params.id
-        }, updateStudent)
-            .then(student => {
-                res.json({
-                    status: true,
-                    student: student
-                })
-            })
-            .catch(err => {
-                res.json({
-                    status: false,
-                    error: err
-                })
-            }) */
         Student.findOneAndUpdate({
             _id: req.params.id
         }, updateStudent, err => {
