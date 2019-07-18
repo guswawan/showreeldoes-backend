@@ -20,6 +20,10 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    token: {
+        type: String,
+        default: null
+    },
     id_student: Schema.Types.ObjectId
 });
 
