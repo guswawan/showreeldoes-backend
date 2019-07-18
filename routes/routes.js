@@ -17,7 +17,7 @@ router.post('/login', user_controller.user_login);
 router.get('/me', auth, user_controller.user_dashboard);
 
 //LOGOUT USER
-router.get('/logout', user_controller.user_logout);
+router.post('/logout/:id', user_controller.user_logout);
 
 //POST USER BY ID
 router.post('/user/:id', user_controller.user_createbyid);

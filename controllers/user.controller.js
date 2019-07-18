@@ -129,10 +129,22 @@ exports.user_dashboard = function (req, res) {
 
 //USER LOGOUT
 exports.user_logout = function (req, res) {
-    res.status(200).json({
-        login: false,
-        message: "Yu're logout.",
+    let logout = {
+        token: null
+    }
+    User.findByIdAndUpdate(req.params.id, logout, (err, update) => {
+        if (err) {
+            res.status(400).json({
+                msg: "Error cant logout"
+            })
+        } else {
+            res.status(200).json({
+                login: false,
+                message: "Yu're logout.",
+                update: update
 
+            })
+        }
     })
 }
 
@@ -166,41 +178,49 @@ exports.users_detail = function (req, res) {
 
 //PUT USER
 exports.user_update = function (req, res) {
-    let updateUser = req.body
-    var token = req.headers['x-access-token'];
-    if (!token)
-        return res.status(403).json({
-            auth: false,
-            message: 'No token provided.'
-        });
+    // var token = req.headers['x-access-token'];
+    // if (!token)
+    //     return res.status(403).json({
+    //         auth: false,
+    //         message: 'No token provided.'
+    //     });
 
-    jwt.verify(token, 'secret', //dari config.secret diubah ke secret
-        function (err, decoded) {
-            if (err)
-                return res.status(500).json({
-                    auth: false,
-                    message: "Failed to authenticate token"
-                })
+    // jwt.verify(token, 'secret', //dari config.secret diubah ke secret
+    //     function (err, decoded) {
+    //         if (err)
+    //             return res.status(500).json({
+    //                 auth: false,
+    //                 message: "Failed to authenticate token"
+    //             })
 
-            //if everythin good
-            req.userId = decoded.id;
-            // next();
-            bcrypt.hash(req.body.password, 10, (err, hash) => {
-                User.findByIdAndUpdate(req.params.id, updateUser, (err, user) => {
-                    if (err) {
-                        res.json({
-                            success: false,
-                            error: err
-                        })
-                    } else {
-                        res.json({
-                            success: true,
-                            message: "User updated successfully!",
-                        })
-                    }
-                })
+    //         //if everythin good
+    //         req.userId = decoded.id;
+    // next();
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        let updateUser = {
+            username: req.body.username,
+            password: hash
+        }
+        console.log(hash)
+        if (err) {
+            console.log(false)
+        } else {
+            User.findByIdAndUpdate(req.params.id, updateUser, (err, user) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        error: err
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        message: "User updated successfully!",
+                    })
+                }
             })
-        });
+        }
+    })
+    // });
 };
 
 //USER DELETE
