@@ -120,7 +120,10 @@ exports.user_dashboard = function (req, res) {
                     if (err) return res.status(500).send("There was a problem finding the user.");
                     if (!user) return res.status(404).send("No user found.");
 
-                    res.status(200).json(user);
+                    res.status(200).json({
+                        message: "Welcome!",
+                        user: user
+                    });
                 });
         });
 };
@@ -149,7 +152,7 @@ exports.user_logout = function (req, res) {
 
 //GET USERS
 exports.users_all = function (req, res) {
-    User.find((err, users) => {
+    User.find({}).populate('id_student').exec((err, users) => {
         if (err) return res.json({
             succcess: false,
             error: err
@@ -163,16 +166,18 @@ exports.users_all = function (req, res) {
 
 //GET USER BY ID
 exports.users_detail = function (req, res) {
-    User.findById(req.params.id, (err, user) => {
-        if (err) return res.json({
-            succcess: false,
-            error: err
-        });
-        return res.json({
-            succcess: true,
-            user: user
-        })
-    })
+    User.findById(req.params.id).populate('id_student').exec((err, user) => {
+        (err, user) => {
+            if (err) return res.json({
+                succcess: false,
+                error: err
+            });
+            return res.json({
+                succcess: true,
+                user: user
+            })
+        }
+    }) 
 };
 
 //PUT USER

@@ -30,10 +30,23 @@ const StudentSchema = new Schema({
         required: true
     },
     phone: {
-        type: Number,
+        type: String,
         required: true
     },
-    id_user: Schema.Types.ObjectId,
+    id_user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    // id_user: Schema.Types.ObjectId,
+    showreels: [{
+        id_showreel: {
+            type: Schema.Types.ObjectId,
+            ref: 'Showreel'
+        },
+        title: String,
+        description: String,
+        fileUpload: String,
+    }],
     profile_pic: String
 
 })
