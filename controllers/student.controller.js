@@ -1,6 +1,7 @@
 const Student = require('../models/student.model');
 
 
+
 module.exports = {
 
     //POST STUDENT
@@ -13,11 +14,12 @@ module.exports = {
             .then(user => {
                 if (!user) {
                     Student.create(student)
-                        .then(users => {
+                        .then((users, result) => {
                             res.json({
                                 message: users + 'Registered Success'
                             })
                         })
+                        
                         .catch(err => {
                             res.send('Error' + err)
                         })
@@ -34,7 +36,7 @@ module.exports = {
 
     //GET STUDENT
     students_all: function (req, res) {
-        Student.find((err, students) => {
+        Student.find({}).populate('id_showreel').exec((err, students) => {
             if (err) {
                 res.json({
                     status: false,
@@ -51,7 +53,7 @@ module.exports = {
 
     //GET STUDENT BY ID
     students_detail: function (req, res) {
-        Student.findById(req.params.id, (err, student) => {
+        Student.findById(req.params.id).populate('showreels.id_showreel').exec((err, student) => {
             if (err) {
                 res.json({
                     status: false,
@@ -63,7 +65,21 @@ module.exports = {
                     student: student
                 })
             }
-        })
+        },
+            Student.findById(req.params.id).populate('id_user').exec((err, user) => {
+                if (err) {
+                    res.status(400).json({
+                        status: false,
+                        err: error
+                    })
+                } else {
+                    res.status(200).json({
+                        status: true,
+                        user: user
+                    })
+                }
+            })
+        )
     },
 
     //PUT STUDENT

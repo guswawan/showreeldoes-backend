@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
-// <<<<<<< user
-// const saltRound = 10;
-// =======
 const salt = 10;
-// >>>>>>> master
+
 
 const UserSchema = new Schema({
     username: {
@@ -24,7 +21,11 @@ const UserSchema = new Schema({
         type: String,
         default: null
     },
-    id_student: Schema.Types.ObjectId
+    id_student: {
+        type: Schema.Types.ObjectId,
+        ref: 'Student'
+    }
+    // id_student: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('User', UserSchema);
