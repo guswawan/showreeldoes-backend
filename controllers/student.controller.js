@@ -53,7 +53,8 @@ module.exports = {
 
     //GET STUDENT BY ID
     students_detail: function (req, res) {
-        Student.findById(req.params.id).populate('showreels.id_showreel').exec((err, student) => {
+        Student.findById(req.params.id).populate('showreels.id_showreel').populate('id_user')
+        .exec((err, student) => {
             if (err) {
                 res.json({
                     status: false,
@@ -62,24 +63,11 @@ module.exports = {
             } else {
                 res.json({
                     status: true,
-                    student: student
+                    student: student  
                 })
             }
-        },
-            Student.findById(req.params.id).populate('id_user').exec((err, user) => {
-                if (err) {
-                    res.status(400).json({
-                        status: false,
-                        err: error
-                    })
-                } else {
-                    res.status(200).json({
-                        status: true,
-                        user: user
-                    })
-                }
-            })
-        )
+        }
+)
     },
 
     //PUT STUDENT
@@ -106,7 +94,7 @@ module.exports = {
     //STUDENT DELETE
     student_delete: function (req, res) {
         let deleteById = {
-            _id: req.params._id
+            _id: req.params.id
         }
         Student.findOneAndDelete(deleteById, err => {
             if (err) {

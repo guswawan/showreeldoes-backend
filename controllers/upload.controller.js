@@ -53,34 +53,34 @@ exports.upload_create = function (req, res) {
     }
 }
 
-exports.upload_multi = async function (req, res) {
-    let filePaths = req.body.filePaths;
-    let multipleUpload = new Promise(async (resolve, reject) => {
-        let upload_len = filePaths.length;
-        let upload_res = new Array();
+// exports.upload_multi = async function (req, res) {
+//     let filePaths = req.body.filePaths;
+//     let multipleUpload = new Promise(async (resolve, reject) => {
+//         let upload_len = filePaths.length;
+//         let upload_res = new Array();
 
-    for(let i = 0; i <= upload_len + 1; i++)
-    {
-        let filePath = filePaths[i];
-        await cloudinary.v2.uploader.upload(filePath, (error, result) => {
-            if(upload_res.length === upload_len)
-            {
-                resolve(upload_res)
-            }else if(result){
-                upload_res.push(result.public_id);
-            }else if(error){
-                console.log(error)
-                reject(error)
-            }
-        })
-    }
-    })
-    .then((result) => result)
-    .catch((error) => error)
+//     for(let i = 0; i <= upload_len + 1; i++)
+//     {
+//         let filePath = filePaths[i];
+//         await cloudinary.v2.uploader.upload(filePath, (error, result) => {
+//             if(upload_res.length === upload_len)
+//             {
+//                 resolve(upload_res)
+//             }else if(result){
+//                 upload_res.push(result.public_id);
+//             }else if(error){
+//                 console.log(error)
+//                 reject(error)
+//             }
+//         })
+//     }
+//     })
+//     .then((result) => result)
+//     .catch((error) => error)
 
-    let upload = await multipleUpload;
-    res.json({ 'respon': upload})
-}
+//     let upload = await multipleUpload;
+//     res.json({ 'respon': upload})
+// }
 
 
 exports.upload_getall = function (req, res) {

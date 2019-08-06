@@ -11,33 +11,33 @@ module.exports = {
             fileUpload: req.body.fileUpload, 
             id_student: req.params.id
         },
-            (err, result) => {
-                if (err) {
-                    return res.status(500).send("There was problem registering the user");
-                } else {
-                    Student.findByIdAndUpdate(req.params.id, {
-                        //KALO DATANYA ARRAY DI TAMBAH $PUSH: {} :*
-                        $push: {showreels: result} //$push: {id_showreel: result._id}
-                    }, 
-                        (err, response) => {
-                            console.log("Hasil", response)
-                            if (err) {
-                                res.json({
-                                    success: false,
-                                    error: err
-                                })
-                            } else {
-                                res.json({
-                                    success: true,
-                                    results: result,
-                                    response: response,
-                                    message: "success"
-                                })
-                            }
-                        });
-                        console.log("zzz", result)
-                }
-            });
+        (err, result) => {
+            if (err) {
+                return res.status(500).send("There was problem registering the user");
+            } else {
+                Student.findByIdAndUpdate(req.params.id, {
+                    //KALO DATANYA ARRAY DI TAMBAH $PUSH: {} :*
+                    $push: {showreels: result} //$push: {id_showreel: result._id}
+                }, 
+                (err, response) => {
+                    console.log("Hasil", response)
+                    if (err) {
+                        res.json({
+                            success: false,
+                            error: err
+                        })
+                    } else {
+                        res.json({
+                            success: true,
+                            results: result,
+                            response: response,
+                            message: "success"
+                        })
+                    }
+                });
+                console.log("zzz", result)
+            }
+        });
         // Showreel.create(req.body, (err, showreels) => {
         //     if (err) {
         //         res.status(400).json({
@@ -55,6 +55,7 @@ module.exports = {
 
     //GET SHOWREEL
     showreel_all: function (req, res) {
+        // Showreel.find({}, (err, showreels) => {
         Showreel.find({}).populate('id_student').exec((err, showreels) => {
             if (err) {
                 res.json({
@@ -72,7 +73,6 @@ module.exports = {
 
     //GET SHOWREEL BY ID
     showreel_detail: function (req, res) {
-        console.log(req.params.id)
         Showreel.findById(req.params.id).populate('id_student').exec((err, results) => {
             if (err) {
                 res.status(400).json({
@@ -85,7 +85,6 @@ module.exports = {
                     success: true,
                     results: results
                 })
-                console.log("zzz", results)
             }     
        })
     },
@@ -102,14 +101,15 @@ module.exports = {
             } else {
                 res.status(200).json({
                     success: true,
-                    updated: "Success updated showreel"
+                    updated: updated,
+                    message: "Success updated showreel"
                 })
             }
         })
     },
 
     //DELET SHOWREEL BY ID
-    showreel_delete: function (req, res) {
+    showreel_delete: function (req, res) {               
         Showreel.findByIdAndDelete({
             _id: req.params.id
         }, (err, deleted) => {
@@ -119,10 +119,25 @@ module.exports = {
                     message: "Cant deleted showreel"
                 })
             } else {
-                res.status(200).json({
-                    success: true,
-                    message: "Success deleted showreel"
+                Student.updateOne({
+                    $pull: {showreels: deleted}
+                },
+                (err, response) => {
+                    if (err) {
+                        res.status(400).json({
+                            success: false,
+                            err: err
+                        })
+                    } else {
+                        res.status(200).json({
+                            success: true,
+                            deleted: deleted,
+                            response: response,
+                            message: "Success deleted showreel"
+                        })
+                    }
                 })
+                console.log('heii,,,,,', {deleted});
             }
         })
     }

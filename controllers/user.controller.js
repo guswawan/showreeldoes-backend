@@ -43,7 +43,11 @@ exports.user_createbyid = function (req, res) {
 //LOGIN USER
 exports.user_login = async function (req, res) {
     if (req.body.password && req.body.username) {
-        User.findOne({ username: req.body.username }, (err, user) => {
+        // Student.findById(req.params.id).populate('showreels.id_showreel').populate('id_user')
+        // .exec((err, student)
+        
+        // User.findOne({ username: req.body.username }, (err, user) => {
+        User.findOne({ username: req.body.username }).populate('id_student').exec((err, user) => {
             let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
             if (err) return res.status(500).send(
                 "Error on the server"
@@ -60,16 +64,14 @@ exports.user_login = async function (req, res) {
                 })
             } else {
                 let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
-                User.findByIdAndUpdate({ _id: user._id }, { token: token }, (err, update) => {
+                User.findByIdAndUpdate({ _id: user._id }, { token: token }).populate('id_student').exec((err) => {
                     if (err) {
                         res.status(400).json({
                             success: false,
                             error: "Cant update"
                         })
                     } else {
-                        User.findOne({
-                            username: req.body.username
-                        }, (err, id) => {
+                        User.findOne({username: req.body.username}).populate('id_student').exec((err, latestUpdate) => {
                             if (err) {
                                 res.status(400).json({
                                     success: false,
@@ -78,10 +80,13 @@ exports.user_login = async function (req, res) {
                             } else {
                                 res.status(200).json({
                                     success: true,
-                                    update: id,
+                                    // update: update,
+                                    lastesUpdate: latestUpdate,
                                     message: 'Success Update!'
                                 })
                             }
+                            console.log('id', latestUpdate);
+                            // console.log('update', update)
                         })
                     }
                 })
