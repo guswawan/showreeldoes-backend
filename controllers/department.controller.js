@@ -65,7 +65,8 @@ module.exports = {
             } else {
                 res.status(200).json({
                     success: true,
-                    updated: "Success updated!"
+                    updated: updated,
+                    message: "Success updated!"
                 })
             }
         })
