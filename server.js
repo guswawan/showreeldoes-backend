@@ -40,6 +40,6 @@ db.on("error", console.error.bind(console, "MongoDB connection error"));
 
 
 //SERVER
-app.listen(PORT, () => console.log(`Express server is up and running on port ${PORT}`));
+app.listen(process.env.PORT, () => console.log(`Express server is up and running on port ${PORT}`));
 
 
