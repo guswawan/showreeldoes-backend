@@ -8,9 +8,9 @@ cloudinary.config({
 });
 
 
-exports.uploads = (files) => {
+exports.uploads = (file) => {
     return new Promise(resolve => {
-        cloudinary.uploader.upload(files,(results) => {
+        cloudinary.uploader.upload(file,(results) => {
             resolve({url: results.url, id: results.public_id})
             
         }, {resource_type: "auto"})
