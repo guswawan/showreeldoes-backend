@@ -9,7 +9,7 @@ exports.upload_create = function (req, res) {
         //     imageName: req.body.imageName
         // };
         var fileUpload = {
-            // imageName: req.body.imageName,
+            imageName: req.body.imageName,
             cloudImage: req.files[0].path,
             imageId: ''
         }
@@ -32,6 +32,7 @@ exports.upload_create = function (req, res) {
         //     }
             //if all thing go well, post image to cloudinary
             Cloud.uploads(fileUpload.cloudImage).then((result) => {
+                console.log(result)
                 var fileUpload = {
                     imageName: req.body.imageName,
                     cloudImage: result.url,
