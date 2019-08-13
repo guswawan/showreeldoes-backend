@@ -31,7 +31,7 @@ exports.upload_create = function (req, res) {
         //         }
         //     }
             //if all thing go well, post image to cloudinary
-            Cloud.uploads(fileUpload.cloudImage).then((result) => {
+            Cloud.uploads(fileUpload.cloudImage).then((err, result) => {
                 var fileUpload = {
                     imageName: req.body.imageName,
                     cloudImage: result.url,
