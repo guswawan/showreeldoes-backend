@@ -1,5 +1,5 @@
 const multer = require('multer');
-// const path = require('path');
+const path = require('path');
 // const Datauri = require('datauri');
 
 // const storage = multer.memoryStorage({
@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
       cb(null, 'public/images/')
     },
     filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now()+path.extname(file.originalname))
+      cb(null, file.originalname + '-' + Date.now()+path.extname(file.originalname))
     },
     fileFilter: function(req, file, cb) {
       let ext = path.extname(file.originalname)
