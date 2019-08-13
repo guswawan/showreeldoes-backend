@@ -43,8 +43,7 @@ exports.upload_create = function (req, res) {
                     if (result) {
                         res.json({
                             message: "image uploaded successfully!",
-                            result: result,
-                            fileUpload: fileUpload
+                            result: result
                         })
                     }
                 // })
