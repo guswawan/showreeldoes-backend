@@ -3,9 +3,9 @@ const multer = require('multer');
 // const Datauri = require('datauri');
 
 const storage = multer.memoryStorage({
-    destination:function(req, file,cb){
+    destination:function(req, file, cb){
         if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/gif' || file.mimetype === 'video/mp4'){
-        cb(null, {storage});
+        cb(null, 'public/images/');
         }else{
         cb({message: 'this file is neither a video or image file'}, false)
         }
@@ -14,8 +14,7 @@ const storage = multer.memoryStorage({
         cb(null, file.originalname);
     }
         
-})
-
+});
 const upload = multer({storage: storage});
 
 module.exports = upload;
