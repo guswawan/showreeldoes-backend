@@ -1,4 +1,4 @@
-// const Upload = require('../models/upload.model');
+const Upload = require('../models/upload.model');
 const Cloud = require('../config/cloudinaryConfig');
 
 
@@ -40,14 +40,19 @@ exports.upload_create = function (req, res) {
                 }
 
                 //then create file in database
-                // Upload.create(fileUpload, (err, created) => {
-                    if (result) {
+                Upload.create(fileUpload, (err, created) => {
+                    if (err) {
                         res.json({
+                            message: "failed.",
+                            err: err
+                        })
+                    } else {
+                        res.status(200).json({
                             message: "image uploaded successfully!",
-                            result: result
+                            created: created
                         })
                     }
-                // })
+                })
             })
         // });
     }catch(execptions){
