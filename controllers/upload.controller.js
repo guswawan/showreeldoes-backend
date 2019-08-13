@@ -26,12 +26,12 @@ exports.upload_create = function (req, res) {
                 }
             }
             //if all thing go well, post image to cloudinary
-            Cloud.uploads(fileUpload.cloudImage).then((result) => {
-                console.log("iki result... ",result)
+            Cloud.uploads(fileUpload.cloudImage).then((results) => {
+                console.log("iki result... ",results)
                 var fileUpload = {
                     imageName: req.body.imageName,
-                    cloudImage: result.url,
-                    imageId: result.id
+                    cloudImage: results.url,
+                    imageId: results.id
                 }
 
                 //then create file in database

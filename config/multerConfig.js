@@ -1,6 +1,5 @@
 const multer = require('multer');
 // const path = require('path');
-// const Datauri = require('datauri');
 
 const storage = multer.memoryStorage({
     destination:function(req, file, cb){

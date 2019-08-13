@@ -1,5 +1,4 @@
 const cloudinary = require('cloudinary');
-// const multerCloudinary = require('multer-cloudinary');
 
 
 cloudinary.config({
@@ -11,8 +10,8 @@ cloudinary.config({
 
 exports.uploads = (files) => {
     return new Promise(resolve => {
-        cloudinary.uploader.upload(files, (result) => {
-            resolve({url: result.url, id: result.public_id})
+        cloudinary.uploader.upload(files, (results) => {
+            resolve({url: results.url, id: results.public_id})
             
         }, {resource_type: "auto"})
     })
