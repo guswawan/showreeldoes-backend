@@ -1,4 +1,4 @@
-const Upload = require('../models/upload.model');
+// const Upload = require('../models/upload.model');
 const Cloud = require('../config/cloudinaryConfig');
 
 
@@ -7,51 +7,51 @@ exports.upload_create = function (req, res) {
         var fileUpload = {
             imageName: req.body.imageName
         };
-        Upload.find({imageName: fileUpload.imageName}, (err, cb) => {
-            if (err) {
-                res.json({
-                    err: err,
-                    message: "there was a problem uploading image"
-                })
-            } else if( cb.length >= 1 ) {
-                res.json({
-                    message: "file already exist"
-                })
-            } else {
-                var fileUpload = {
-                    imageName: req.body.imageName,
-                    cloudImage: req.files[0].path,
-                    imageId: ''
-                }
-            }
+        // Upload.find({imageName: fileUpload.imageName}, (err, cb) => {
+        //     if (err) {
+        //         res.json({
+        //             err: err,
+        //             message: "there was a problem uploading image"
+        //         })
+        //     } else if( cb.length >= 1 ) {
+        //         res.json({
+        //             message: "file already exist"
+        //         })
+        //     } else {
+        //         var fileUpload = {
+        //             imageName: req.body.imageName,
+        //             cloudImage: req.files[0].path,
+        //             imageId: ''
+        //         }
+        //     }
             //if all thing go well, post image to cloudinary
-            Cloud.uploads(fileUpload.cloudImage).then((results) => {
+            Cloud.uploads(fileUpload.cloudImage).then((result) => {
                 var fileUpload = {
                     imageName: req.body.imageName,
-                    cloudImage: results.url,
-                    imageId: results.id
+                    cloudImage: result.url,
+                    imageId: result.id
                 }
 
                 //then create file in database
-                Upload.create(fileUpload, (err, created) => {
-                    if (err) {
-                        res.json({
-                            err: err,
-                            message: "could not upload, try again!"
-                        })
-                    } else {
-                        res.json({
-                            created: created,
-                            message: "image uploaded successfully!"
-                        })
-                    }
-                })
+                // Upload.create(fileUpload, (err, created) => {
+                //     if (err) {
+                //         res.json({
+                //             err: err,
+                //             message: "could not upload, try again!"
+                //         })
+                //     } else {
+                //         res.json({
+                //             created: created,
+                //             message: "image uploaded successfully!"
+                //         })
+                //     }
+                // })
             })
-        });
+        // });
     }catch(execptions){
         console.log(execptions)
     }
-}
+};
 
 // exports.upload_multi = async function (req, res) {
 //     let filePaths = req.body.filePaths;
