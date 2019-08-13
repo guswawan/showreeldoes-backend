@@ -5,31 +5,26 @@ const Cloud = require('../config/cloudinaryConfig');
 
 exports.upload_create = function (req, res) {
     try {
-        // var fileUpload = {
-        //     imageName: req.body.imageName
-        // };
         var fileUpload = {
-            imageName: req.body.imageName,
-            cloudImage: req.files[0].path,
-            imageId: ''
-        }
-        // Upload.find({imageName: fileUpload.imageName}, (err, cb) => {
-        //     if (err) {
-        //         res.json({
-        //             err: err,
-        //             message: "there was a problem uploading image"
-        //         })
-        //     } else if( cb.length >= 1 ) {
-        //         res.json({
-        //             message: "file already exist"
-        //         })
-        //     } else {
-        //         var fileUpload = {
-        //             imageName: req.body.imageName,
-        //             cloudImage: req.files[0].path,
-        //             imageId: ''
-        //         }
-        //     }
+            imageName: req.body.imageName
+        };
+        Upload.find({imageName: fileUpload.imageName}, (err, cb) => {
+            if (err) {
+                res.json({
+                    err: err,
+                    message: "there was a problem uploading image"
+                })
+            } else if( cb.length >= 1 ) {
+                res.json({
+                    message: "file already exist"
+                })
+            } else {
+                var fileUpload = {
+                    imageName: req.body.imageName,
+                    cloudImage: req.files[0].path,
+                    imageId: ''
+                }
+            }
             //if all thing go well, post image to cloudinary
             Cloud.uploads(fileUpload.cloudImage).then((result) => {
                 console.log("iki result... ",result)
@@ -54,7 +49,7 @@ exports.upload_create = function (req, res) {
                     }
                 })
             })
-        // });
+        });
     }catch(execptions){
         console.log(execptions)
     }
