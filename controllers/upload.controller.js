@@ -2,58 +2,73 @@ const Upload = require('../models/upload.model');
 const Cloud = require('../config/cloudinaryConfig');
 
 
-
 exports.upload_create = function (req, res) {
-    try {
+    console.log(req.files)
         var fileUpload = {
-            imageName: req.body.imageName
+            imageName: req.body.imageName,
+            cloudImage: req.files[0].url,
+            imageId: req.files.public_id
         };
-        Upload.find({imageName: fileUpload.imageName}, (err, cb) => {
-            if (err) {
-                res.json({
-                    err: err,
-                    message: "there was a problem uploading image"
-                })
-            } else if( cb.length >= 1 ) {
-                res.json({
-                    message: "file already exist"
-                })
-            } else {
-                var fileUpload = {
-                    imageName: req.body.imageName,
-                    cloudImage: req.files[0].path,
-                    imageId: ''
-                }
-            }
-            //if all thing go well, post image to cloudinary
-            Cloud.uploads(fileUpload.cloudImage).then((results) => {
-                console.log("iki result... ",results)
-                var fileUpload = {
-                    imageName: req.body.imageName,
-                    cloudImage: results.url,
-                    imageId: results.id
-                }
 
-                //then create file in database
-                Upload.create(fileUpload, (err, created) => {
-                    if (err) {
-                        res.json({
-                            message: "failed.",
-                            err: err
-                        })
-                    } else {
-                        res.status(200).json({
-                            message: "image uploaded successfully!",
-                            created: created
-                        })
-                    }
-                })
-            })
-        });
-    }catch(execptions){
-        console.log(execptions)
-    }
+        //then create file in database
+        Upload.create(fileUpload) 
+            .then(created => res.status(200).json(created))
+            .catch(err => console.log(err));
 };
+
+// exports.upload_create = function (req, res) {
+//     try {
+//         var fileUpload = {
+//             imageName: req.body.imageName,
+//             cloudImage: req.files[0].path,
+//             imageId: ''
+//         };
+//         Upload.find({imageName: fileUpload.imageName}, (err, cb) => {
+//             if (err) {
+//                 res.json({
+//                     err: err,
+//                     message: "there was a problem uploading image"
+//                 })
+//             } else if( cb.length >= 1 ) {
+//                 res.json({
+//                     message: "file already exist"
+//                 })
+//             } else {
+//                 var fileUpload = {
+//                     imageName: req.body.imageName,
+//                     cloudImage: req.files[0].path,
+//                     imageId: ''
+//                 }
+//             }
+//             //if all thing go well, post image to cloudinary
+//             Cloud.uploads(fileUpload.cloudImage).then((results) => {
+//                 console.log("iki result... ",results)
+//                 var fileUpload = {
+//                     imageName: req.body.imageName,
+//                     cloudImage: results.url,
+//                     imageId: results.id
+//                 }
+
+//                 //then create file in database
+//                 Upload.create(fileUpload, (err, created) => {
+//                     if (err) {
+//                         res.json({
+//                             message: "failed.",
+//                             err: err
+//                         })
+//                     } else {
+//                         res.status(200).json({
+//                             message: "image uploaded successfully!",
+//                             created: created
+//                         })
+//                     }
+//                 })
+//             })
+//         });
+//     }catch(execptions){
+//         console.log(execptions)
+//     }
+// };
 
 // exports.upload_multi = async function (req, res) {
 //     let filePaths = req.body.filePaths;

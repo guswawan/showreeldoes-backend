@@ -9,7 +9,8 @@ const partner_controller = require('../controllers/partner.controller');
 const auth = require('../config/auth.config');
 const discuss_controller = require('../controllers/discuss.controller');
 const upload_controller = require('../controllers/upload.controller');
-const upload = require('../config/multerConfig');
+// const upload = require('../config/multerConfig');
+const upload = require('../config/cloudinaryConfig');
 
 
 /*+++ USER +++*/
