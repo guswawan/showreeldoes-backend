@@ -1,9 +1,8 @@
 const Upload = require('../models/upload.model');
-const Cloud = require('../config/cloudinaryConfig');
 
 
 exports.upload_create = function (req, res) {
-    console.log(req.files)
+    // console.log(req.files)
         var fileUpload = {
             imageName: req.body.imageName,
             cloudImage: req.files[0].url,
