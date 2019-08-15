@@ -104,7 +104,6 @@ router.put('/updatediscuss/:id', discuss_controller.discuss_update);
 router.delete('/deletediscuss/:id', discuss_controller.discuss_delete);
 
 /*+++ UPLOAD +++*/
-// router.post('/uploads', upload.array('cloudImage',3), upload_controller.upload_create);
 router.post('/upload', upload.any(), upload_controller.upload_create);
 router.get('/uploads', upload_controller.upload_getall);
 router.get('/upload/:id', upload_controller.upload_detail);
