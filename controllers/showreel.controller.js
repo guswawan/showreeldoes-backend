@@ -29,7 +29,7 @@ module.exports = {
                     } else {
                         res.json({
                             success: true,
-                            results: result,
+                            result: result,
                             response: response,
                             message: "success"
                         })
