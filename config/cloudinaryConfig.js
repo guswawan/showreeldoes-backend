@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
 const storage = cloudinaryStorage({
-    cloudinary: cloudinary.uploader.v2,
+    cloudinary: cloudinary.uploader,
     folder: "showreeldoes",
     allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"]  
 });
