@@ -1,19 +1,41 @@
 const Upload = require('../models/upload.model');
 
 
+// exports.upload_create = function (req, res) {
+//     console.log("iki req...", req.files)
+//         var fileUpload = {
+//             imageName: req.body.imageName,
+//             cloudImage: req.files[0].url,
+//             imageId: req.files.public_id
+//         };
+
+//         //then create file in database
+//         Upload.create(fileUpload) 
+//         console.log("iki fileUpload...", fileUpload)
+//             .then(fileUpload => res.status(200).json(fileUpload))
+//             .catch(err => console.log(err));
+// };
+
 exports.upload_create = function (req, res) {
     console.log("iki req...", req.files)
-        var fileUpload = {
-            imageName: req.body.imageName,
-            cloudImage: req.files[0].url,
-            imageId: req.files.public_id
-        };
-
-        //then create file in database
-        Upload.create(fileUpload) 
-        console.log("iki fileUpload...", fileUpload)
-            .then(created => res.status(200).json(created))
-            .catch(err => console.log(err));
+    var fileUpload = {
+        imageName: req.body.imageName,
+        cloudImage: req.files[0].url,
+        imageId: req.files.public_id
+    }
+    Upload.create(fileUpload, (err, created) => {
+        if (err) {
+            res.json({
+                message: "failed.",
+                err: err
+            })
+        } else {
+            res.status(200).json({
+                message: "image uploaded successfully!",
+                created: created
+            })
+        }
+    })
 };
 
 // exports.upload_create = function (req, res) {
