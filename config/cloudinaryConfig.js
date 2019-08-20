@@ -1,4 +1,4 @@
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary');
 const multer = require('multer');
 const cloudinaryStorage = require('multer-storage-cloudinary');
 
@@ -12,7 +12,7 @@ cloudinary.config({
 const storage = cloudinaryStorage({
     cloudinary: cloudinary,
     folder: "showreeldoes",
-    allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"]  
+    allowedFormats: ["jpg", "jpeg", "png", "gif", "MP4"]  
 });
 
 const upload = multer({storage: storage});
