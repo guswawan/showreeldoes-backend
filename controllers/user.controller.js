@@ -63,7 +63,7 @@ exports.user_login = async function (req, res) {
                     message: "Invalid username or password"
                 })
             } else {
-                let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
+                let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '12h' });
                 User.findByIdAndUpdate({ _id: user._id }, { token: token }).populate('id_student').exec((err) => {
                     if (err) {
                         res.status(400).json({

@@ -1,4 +1,5 @@
 const About = require('../models/about.model');
+const Upload = require('../models/upload.model');
 
 module.exports = {
     //POST ABOUT
@@ -7,11 +8,12 @@ module.exports = {
             if (err) {
                 res.status(500).json({
                     success: false,
-                    message: "Cannt create about"
+                    message: "Cant create about"
                 })
             } else {
                 res.status(200).json({
                     success: true,
+                    message: "Success!",
                     about: about
                 })
             }
@@ -71,6 +73,30 @@ module.exports = {
         })
     },
 
+    //PUT ABOUT BY ID
+    about_update: function (req, res) {
+        let aboutUpdate = {
+            content: req.body.content,
+            image: req.body.image
+        }
+        About.findByIdAndUpdate({
+            _id: req.params.id
+        }, aboutUpdate, (err, updated) => {
+            if (err) {
+                res.status(500).json({
+                    success: false,
+                    message: "Cant updated about"
+                })
+            } else {
+                res.status(200).json({
+                    success: true,
+                    message: "Success update about",
+                    updated: updated
+                })
+            }
+        })
+    },
+
     //DELETE ABOUT BY ID
     about_delete: function (req, res) {
         About.findByIdAndDelete({
@@ -84,7 +110,8 @@ module.exports = {
             } else {
                 res.status(200).json({
                     success: true,
-                    message: "Success Delete"
+                    message: "Success Delete",
+                    deleted: deleted
                 })
             }
         })
