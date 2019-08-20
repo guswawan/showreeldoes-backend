@@ -17,7 +17,7 @@ const Upload = require('../models/upload.model');
 // };
 
 exports.upload_create = function (req, res) {
-    console.log("iki req...", req.files)
+    // console.log("iki req...", req.files)
     var fileUpload = {
         imageName: req.body.imageName,
         cloudImage: req.files[0].url,
