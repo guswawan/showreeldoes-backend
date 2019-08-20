@@ -2,7 +2,7 @@ const Upload = require('../models/upload.model');
 
 
 exports.upload_create = function (req, res) {
-    // console.log(req.files)
+    console.log("iki req...", req.files)
         var fileUpload = {
             imageName: req.body.imageName,
             cloudImage: req.files[0].url,
@@ -11,6 +11,7 @@ exports.upload_create = function (req, res) {
 
         //then create file in database
         Upload.create(fileUpload) 
+        console.log("iki fileUpload...", fileUpload)
             .then(created => res.status(200).json(created))
             .catch(err => console.log(err));
 };
@@ -68,35 +69,6 @@ exports.upload_create = function (req, res) {
 //         console.log(execptions)
 //     }
 // };
-
-// exports.upload_multi = async function (req, res) {
-//     let filePaths = req.body.filePaths;
-//     let multipleUpload = new Promise(async (resolve, reject) => {
-//         let upload_len = filePaths.length;
-//         let upload_res = new Array();
-
-//     for(let i = 0; i <= upload_len + 1; i++)
-//     {
-//         let filePath = filePaths[i];
-//         await cloudinary.v2.uploader.upload(filePath, (error, result) => {
-//             if(upload_res.length === upload_len)
-//             {
-//                 resolve(upload_res)
-//             }else if(result){
-//                 upload_res.push(result.public_id);
-//             }else if(error){
-//                 console.log(error)
-//                 reject(error)
-//             }
-//         })
-//     }
-//     })
-//     .then((result) => result)
-//     .catch((error) => error)
-
-//     let upload = await multipleUpload;
-//     res.json({ 'respon': upload})
-// }
 
 
 exports.upload_getall = function (req, res) {
