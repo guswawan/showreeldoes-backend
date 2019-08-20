@@ -15,7 +15,7 @@ const storage = cloudinaryStorage({
         allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"],
          
 },
-{resource_type: "video"}
+{resource_type: "auto"}
 );
 
 const upload = multer({storage: storage});
@@ -29,13 +29,13 @@ const upload = multer({storage: storage});
 //     })
 // }
 
-exports.upload = function (files) {
-    return new Promise(function (resolve) {
-        cloudinary.uploader.upload(files, function (result) {
-            resolve({url: result.url, id: result.public_id})
-        }, {resource_type: "auto"}
-        )
-    })
-}
+// exports.upload = function (files) {
+//     return new Promise(function (resolve) {
+//         cloudinary.uploader.upload(files, function (result) {
+//             resolve({url: result.url, id: result.public_id})
+//         }, {resource_type: "auto"}
+//         )
+//     })
+// }
 
 module.exports = upload;
