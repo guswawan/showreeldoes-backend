@@ -9,7 +9,7 @@ cloudinary.config({
     api_secret: 'hvErRGv-CktJiRKUbfj2HEtWqBw'
 });
 
-const storagev = cloudinaryStorage({
+const storage = cloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: "showreeldoes",
@@ -18,7 +18,7 @@ const storagev = cloudinaryStorage({
     }   
 });
 
-const uploadVideo = multer({storagev: storagev})
+const uploadVideo = multer({storage: storage})
 
 
 module.exports = uploadVideo;
