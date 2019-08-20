@@ -13,7 +13,7 @@ const storage = cloudinaryStorage({
     cloudinary: cloudinary,
     folder: "showreeldoes",
     allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"],
-    resource_type: "auto"  
+    resource_type: "video"  
 });
 
 const upload = multer({storage: storage});
