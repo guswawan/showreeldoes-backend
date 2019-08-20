@@ -12,7 +12,8 @@ cloudinary.config({
 const storage = cloudinaryStorage({
     cloudinary: cloudinary,
     folder: "showreeldoes",
-    allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"]  
+    allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"],
+    resource_type: "auto"  
 });
 
 const upload = multer({storage: storage});
