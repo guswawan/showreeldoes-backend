@@ -10,7 +10,7 @@ const auth = require('../config/auth.config');
 const discuss_controller = require('../controllers/discuss.controller');
 const upload_controller = require('../controllers/upload.controller');
 const upload = require('../config/cloudinaryConfig');
-const uploadVideo = require('../config/cloudinaryConfig');
+const uploadV = require('../config/cloudinaryConfigV');
 
 
 /*+++ USER +++*/
@@ -106,7 +106,7 @@ router.delete('/deletediscuss/:id', discuss_controller.discuss_delete);
 
 /*+++ UPLOAD +++*/
 router.post('/upload', upload.any(), upload_controller.upload_create);
-router.post('/uploadVideo', uploadVideo.any(), upload_controller.upload_create);
+router.post('/uploadv', uploadV.any(), upload_controller.upload_create);
 router.get('/uploads', upload_controller.upload_getall);
 router.get('/upload/:id', upload_controller.upload_detail);
 router.put('/upload/:id', upload.any(), upload_controller.upload_update);
