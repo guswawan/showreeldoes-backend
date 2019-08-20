@@ -11,14 +11,21 @@ cloudinary.config({
 
 const storage = cloudinaryStorage({
     cloudinary: cloudinary,
+        folder: "showreeldoes",
+        allowedFormats: ["jpg", "jpeg", "png", "gif"],
+});
+
+const storagev = cloudinaryStorage({
+    cloudinary: cloudinary,
     params: {
         folder: "showreeldoes",
-        allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"],
-        resource_type: "video, image"
+        allowedFormats: "mp4",
+        resource_type: "video"
     }   
 });
 
 const upload = multer({storage: storage});
+const uploadVideo = multer({storagev: storagev})
 
 // exports.uploads = (files) => {
 //     return new Promise(resolve => {
@@ -38,4 +45,4 @@ const upload = multer({storage: storage});
 //     })
 // }
 
-module.exports = upload;
+module.exports = upload, uploadVideo;
