@@ -11,9 +11,9 @@ cloudinary.config({
 
 const storage = cloudinaryStorage({
     cloudinary: cloudinary,
-    folder: "showreeldoes",
-    allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"],
     params: {
+        folder: "showreeldoes",
+        allowedFormats: ["jpg", "jpeg", "png", "gif", "mp4"],
         resource_type: "video" 
     }   
 });
